@@ -32,17 +32,23 @@ def get_data_object(X: np.ndarray, df: pd.DataFrame):
 def perform_modelling(data: Data, df: pd.DataFrame, name):
     model_predict(data, df, name)
 
+#     # data transformation
+#     X, group_df = get_embeddings(df)
+#     # data modelling
+#     data = get_data_object(X, df)
+#     # modelling
+#     perform_modelling(data, df, 'name')
+#     print('Done')
 if __name__ == '__main__':
-    # pre-processing steps
     df = load_data()
     df = preprocess_data(df)
+
     df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype('U')
     df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype('U')
 
-    # data transformation
-    X, group_df = get_embeddings(df)
-    # data modelling
-    data = get_data_object(X, df)
-    # modelling
-    perform_modelling(data, df, 'name')
-
+    grouped_df = df.groupby(Config.GROUPED)
+    for name, group_df in grouped_df:
+        print(name)
+        X, group_df = get_embeddings(group_df)
+        data = get_data_object(X, group_df)
+        perform_modelling(data, group_df, name)
