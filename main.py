@@ -33,8 +33,8 @@ def get_data_object(X: np.ndarray, df: pd.DataFrame):
     return Data(X, df)
 
 
-def perform_modelling(data: Data, df: pd.DataFrame, name):
-    model_predict(data, df, name)
+def perform_modelling(data: Data, df: pd.DataFrame, name, model_name):
+    model_predict(data, df, name, model_name)
 
 
 #     # data transformation
@@ -58,4 +58,5 @@ if __name__ == '__main__':
         print(name)
         X, group_df = get_embeddings(group_df)
         data = get_data_object(X, group_df)
-        perform_modelling(data, group_df, name)
+        perform_modelling(data, group_df, name, 'RandomForest')
+        perform_modelling(data, group_df, name, 'AdaBoost')
