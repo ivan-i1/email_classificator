@@ -60,3 +60,4 @@ if __name__ == '__main__':
         data = get_data_object(X, group_df)
         perform_modelling(data, group_df, name, 'RandomForest')
         perform_modelling(data, group_df, name, 'AdaBoost')
+        perform_modelling(data, group_df, name, 'SGD')

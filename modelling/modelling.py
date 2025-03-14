@@ -1,5 +1,7 @@
 from model.randomforest import RandomForest
 from model.adaboost import AdaBoost
+from model.sgd import SGD
+
 
 def model_predict(data, df, name, model_name):
     results = []
@@ -8,7 +10,8 @@ def model_predict(data, df, name, model_name):
     # Dictionary to map model names to their respective classes
     model_switch = {
         "RandomForest": RandomForest,
-        "AdaBoost": AdaBoost
+        "AdaBoost": AdaBoost,
+        "SGD": SGD
     }
 
     # Get the model class from the dictionary
@@ -21,6 +24,7 @@ def model_predict(data, df, name, model_name):
         model.print_results(data)
     else:
         print(f"Model {model_name} not recognized.")
+
 
 def model_evaluate(model, data):
     model.print_results(data)
