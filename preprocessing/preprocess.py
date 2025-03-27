@@ -4,6 +4,7 @@ from Config import *
 from preprocessing.noise_remover import *
 from preprocessing.cleaner import *
 
+
 def preprocess_data(df):
     # De-duplicate input data
     df = de_duplication(df)
@@ -11,18 +12,6 @@ def preprocess_data(df):
     df = noise_remover(df)
     # translate data to english
     # df[Config.TICKET_SUMMARY] = translate_to_en(df[Config.TICKET_SUMMARY].tolist())
-    return df
-
-
-def get_input_data() -> pd.DataFrame:
-    df = pd.read_csv("./data/AppGallery.csv", skipinitialspace=True)
-    df.rename(columns={'Type 1': 'y1', 'Type 2': 'y2',
-              'Type 3': 'y3', 'Type 4': 'y4'}, inplace=True)
-    df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype(
-        'U')
-    df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype('U')
-    df["y"] = df[Config.CLASS_COL]
-    df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
     return df
 
 
