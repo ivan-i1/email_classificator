@@ -1,7 +1,5 @@
 from preprocessing.preprocess import *
 from preprocessing.embeddings import *
-from preprocessing.noise_remover import *
-from preprocessing.cleaner import *
 from models.trainer import *
 from utils.data_model import *
 import random
@@ -13,16 +11,6 @@ np.random.seed(seed)
 def load_data():
     # load the input data
     df = get_input_data()
-    return df
-
-
-def preprocess_data(df):
-    # De-duplicate input data
-    df = de_duplication(df)
-    # remove noise in input data
-    df = noise_remover(df)
-    # translate data to english
-    # df[Config.TICKET_SUMMARY] = translate_to_en(df[Config.TICKET_SUMMARY].tolist())
     return df
 
 
@@ -39,14 +27,6 @@ def perform_modelling(data: DataBundle, df: pd.DataFrame, name, model_name):
     model_predict(data, df, name, model_name)
 
 
-#     # data transformation
-#     X, group_df = get_embeddings(df)
-#     # data modelling
-#     data = get_data_object(X, df)
-#     # modelling
-#     perform_modelling(data, df, 'name')
-#     print('Done')
-#     initial commit
 if __name__ == '__main__':
     df = load_data()
     df = preprocess_data(df)
