@@ -1,12 +1,12 @@
 import numpy as np
 import pandas as pd
-from model.base import BaseModel
+from models.base import BaseModel
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from numpy import *
 import random
 num_folds = 0
-seed =0
+seed = 0
 # Data
 np.random.seed(seed)
 random.seed(seed)
@@ -25,7 +25,8 @@ class RandomForest(BaseModel):
         self.model_name = model_name
         self.embeddings = embeddings
         self.y = y
-        self.mdl = RandomForestClassifier(n_estimators=1000, random_state=seed, class_weight='balanced_subsample')
+        self.mdl = RandomForestClassifier(
+            n_estimators=1000, random_state=seed, class_weight='balanced_subsample')
         self.predictions = None
         self.data_transform()
 
@@ -39,7 +40,5 @@ class RandomForest(BaseModel):
     def print_results(self, data):
         print(classification_report(data.y_test, self.predictions))
 
-
     def data_transform(self) -> None:
         ...
-

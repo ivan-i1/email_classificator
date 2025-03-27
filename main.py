@@ -1,7 +1,7 @@
 from preprocess import *
 from embeddings import *
-from modelling.modelling import *
-from modelling.data_model import *
+from models.trainer import *
+from utils.data_model import *
 import random
 seed = 0
 random.seed(seed)
@@ -30,10 +30,10 @@ def get_embeddings(df: pd.DataFrame):
 
 
 def get_data_object(X: np.ndarray, df: pd.DataFrame):
-    return Data(X, df)
+    return DataBundle(X, df)
 
 
-def perform_modelling(data: Data, df: pd.DataFrame, name, model_name):
+def perform_modelling(data: DataBundle, df: pd.DataFrame, name, model_name):
     model_predict(data, df, name, model_name)
 
 

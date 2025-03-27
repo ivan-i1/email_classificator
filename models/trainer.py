@@ -1,6 +1,6 @@
-from model.randomforest import RandomForest
-from model.adaboost import AdaBoost
-from model.sgd import SGD
+from models.randomforest import RandomForest
+from models.adaboost import AdaBoost
+from models.sgd import SGD
 
 
 def model_predict(data, df, name, model_name):
