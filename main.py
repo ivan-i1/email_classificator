@@ -8,6 +8,7 @@ from preprocessing.label_generator import generate_combined_labels
 from preprocessing.data_splitter import split_data
 from models.model_selector import *
 from architecture.chained_classifier import ChainedClassifier
+from architecture.hierarchical_classifier import *
 from sklearn.metrics import classification_report
 from evaluation.dependency_score import dependency_aware_accuracy
 import random
@@ -40,17 +41,29 @@ def run_chained(group_df, X, base_model):
     model.fit(X, group_df)
     preds = model.predict_all(X)
 
-    print("\n📊 Classification Report (Chained)")
+    print("\n Classification Report (Chained)")
     for level in ["type_2", "type_2_3", "type_2_3_4"]:
         print(f"\nLevel: {level}")
         print(classification_report(
             group_df[level], preds[level], zero_division=0))
 
-    print("\n🔁 Dependency-Aware Accuracy:")
+    print("\n Dependency-Aware Accuracy:")
     for level in ["type_2", "type_3", "type_4"]:
         score = dependency_aware_accuracy(group_df, preds, level)
         print(f"{level}: {score:.4f}")
 
+def run_hierarchical(group_df, X, base_model):
+    model = HierarchicalModel(base_model)
+    model.fit(X, group_df)
+    preds = model.predict(X)
+
+    print("\n Classification Report (Hierarchical)")
+    for level in ["type_2", "type_3", "type_4"]:
+        print(f"\nLevel: {level}")
+        print(classification_report(group_df[level], preds[level], zero_division=0))
+ 
+        score = dependency_aware_accuracy(group_df, preds, level)
+        print(f"Dependency-aware accuracy: {score:.4f}")
 
 if __name__ == '__main__':
 
@@ -66,6 +79,7 @@ if __name__ == '__main__':
     df = preprocess_data(df)
 
     df = generate_combined_labels(df)
+    df.dropna(subset=["type_2", "type_3", "type_4"], inplace=True)
 
     df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype(
         'U')
@@ -89,11 +103,8 @@ if __name__ == '__main__':
         data_bundle = DataBundle(X_train, X_test, y_train, y_test,
                                  y=label_col, classes=classes, embeddings=X)
         model = get_model(args.model, embeddings, label_col).mdl
-        run_chained(group_df, X, model)
 
-        '''
         if args.mode == "chained":
             run_chained(group_df, X, model)
         else:
             run_hierarchical(group_df, X, model)
-        '''
