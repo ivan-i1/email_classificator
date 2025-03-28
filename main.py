@@ -1,6 +1,7 @@
 from preprocessing.preprocess import *
 from preprocessing.embeddings import *
 from preprocessing.data_loader import *
+from preprocessing.data_splitter import *
 from models.trainer import *
 from utils.data_model import *
 import random
@@ -40,7 +41,10 @@ if __name__ == '__main__':
     for name, group_df in grouped_df:
         print(name)
         X, group_df = get_embeddings(group_df)
-        data = get_data_object(X, group_df)
+
+        X_train, X_test, y_train, y_test, y, classes, embeddings = split_data(X, group_df)
+        data = DataBundle(X_train, X_test, y_train, y_test, y, classes, embeddings)
+
         perform_modelling(data, group_df, name, 'RandomForest')
         perform_modelling(data, group_df, name, 'AdaBoost')
         perform_modelling(data, group_df, name, 'SGD')
