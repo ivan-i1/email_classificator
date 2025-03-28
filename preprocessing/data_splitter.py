@@ -7,8 +7,9 @@ seed = 0
 random.seed(seed)
 np.random.seed(seed)
 
-def split_data(X: np.ndarray, df: pd.DataFrame):
-    y = df.y.to_numpy()
+
+def split_data(X: np.ndarray, df: pd.DataFrame, label_col: str):
+    y = df[label_col].to_numpy()
     y_series = pd.Series(y)
 
     good_y_value = y_series.value_counts(
